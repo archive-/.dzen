@@ -4,7 +4,7 @@ TJ's DZEN CONFIG
 Screenshot
 ----------
 
-![TJ's dzen config screenshot](screenshot.png "TJ's dzen config screenshot")
+![TJ's dzen config screenshot](./screenshot.png "TJ's dzen config screenshot")
 
 How to install
 --------------
