@@ -15,6 +15,7 @@
 
 # TODO track X in global so widget position is dynamic
 Y=0
+HOME=/home/tj
 
 # when we fork -- two processes are spawned but `jobs -p` returns half
 # pgrep is an ugly(?) workaround
@@ -73,10 +74,10 @@ workspaces() {
       switchTo=`wmctrl -d | grep $d | cut -d\  -f1`
       if [[ -z "`wmctrl -d | grep $d | grep '*'`" ]]
       then
-        # line+="^ca(1,~/bar.sh $switchTo)$d^ca()"
+        # line+="^ca(1,$HOME/bar.sh $switchTo)$d^ca()"
         line+="$d  "
       else
-        # line+="^ca(1,~/bar.sh $switchTo)^bg($FBG)^fg($FFG)$d^fg()^bg()^ca()"
+        # line+="^ca(1,$HOME/bar.sh $switchTo)^bg($FBG)^fg($FFG)$d^fg()^bg()^ca()"
         # echo -n "^bg($FBG)^fg($FFG)$d^fg()^bg()" ' '
         line+="^bg($FBG)^fg($FFG)$d^fg()^bg() "
         # line+="[ $d ] "
@@ -92,7 +93,7 @@ sound() {
   # X=`expr $X + $W`
   X=530
   W=500
-  ICON="^i(~/.dzen/icons/dzen_xbm_pack/vol-hi.xbm)"
+  ICON="^i($HOME/.dzen/icons/dzen_xbm_pack/vol-hi.xbm)"
   # command to increase the volume
   CI="amixer -c0 sset PCM 5dB+ >/dev/null"
   #CI="aumix -v +5"
@@ -123,11 +124,13 @@ network() {
   WTXB=`cat /sys/class/net/wlan0/statistics/tx_bytes`
   ERXB=`cat /sys/class/net/eth0/statistics/rx_bytes`
   ETXB=`cat /sys/class/net/eth0/statistics/tx_bytes`
-  ICON='^i(~/.dzen/icons/dzen_xbm_pack/net-wifi4.xbm)'
-  ARROW_UP='^i(~/.dzen/icons/dzen_bitmaps/arr_up.xbm)'
-  ARROW_DOWN='^i(~/.dzen/icons/dzen_bitmaps/arr_down.xbm)'
+  ICON="^i($HOME/.dzen/icons/dzen_xbm_pack/net-wifi4.xbm)"
+  ARROW_UP="^i($HOME/.dzen/icons/dzen_bitmaps/arr_up.xbm)"
+  ARROW_DOWN="^i($HOME/.dzen/icons/dzen_bitmaps/arr_down.xbm)"
   while : ; do
     echo -n "$ICON "
+    WLAN0_UP_DOWN=`ip link | grep wlan0 | awk '{print $9}'`
+    ETH0_UP_DOWN=`ip link | grep eth0 | awk '{print $9}'`
     WRXBN=`cat /sys/class/net/wlan0/statistics/rx_bytes`
     WTXBN=`cat /sys/class/net/wlan0/statistics/tx_bytes`
     WRXR=$(printf "%4d kB/s" $(echo "($WRXBN - $WRXB) / 1024/${SLEEP_TIME}" | bc))
@@ -137,13 +140,19 @@ network() {
     ERXR=$(printf "%4d kB/s" $(echo "($ERXBN - $ERXB) / 1024/${SLEEP_TIME}" | bc))
     ETXR=$(printf "%4d kB/s" $(echo "($ETXBN - $ETXB) / 1024/${SLEEP_TIME}" | bc))
     # WLAN0
-    echo -n "^bg($FBG)^fg($FFG)wlan0^fg()^bg() "
+    if [ $WLAN0_UP_DOWN = UP ]; then
+      echo -n "^bg($FBG)^fg($FFG)wlan0^fg()^bg() "
+    fi
+    echo -n "wlan0 "
     echo -n "^fg(orange3)$ARROW_DOWN^fg()"
     echo -n "$WRXR"
     echo -n "^fg(#80AA83)^p(3)$ARROW_UP^fg($FG)"
     echo -n "$WTXR "
     # ETH0
-    echo -n "^bg($FBG)^fg($FFG)eth0^fg()^bg() "
+    if [ $ETH0_UP_DOWN = UP ]; then
+      echo -n "^bg($FBG)^fg($FFG)eth0^fg()^bg() "
+    fi
+    echo -n "eth0 "
     echo -n "^fg(orange3)$ARROW_DOWN^fg()"
     echo -n "$ERXR"
     echo -n "^fg(#80AA83)^p(3)$ARROW_UP^fg($FG)"
@@ -166,9 +175,9 @@ battery() {
     STATUS=`cat $BATT/status`
     REMAINING=`acpi | sed -ne '/%, / s/.*%, \([0-9:]*\).*/\1/p'`
     if [ $STATUS = 'Charging' ]; then
-      ICON='^i(~/.dzen/icons/dzen_xbm_pack/power-ac.xbm)' # caption (also icons are possible)
+      ICON="^i($HOME/.dzen/icons/dzen_xbm_pack/power-ac.xbm)" # caption (also icons are possible)
    else
-      ICON='^i(~/.dzen/icons/dzen_xbm_pack/power-bat2.xbm)' # caption (also icons are possible)
+      ICON="^i($HOME/.dzen/icons/dzen_xbm_pack/power-bat2.xbm)" # caption (also icons are possible)
     fi
     BAT_FULL=`cat $BATT/charge_full`
     RCAP=`cat $BATT/charge_now`

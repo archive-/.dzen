@@ -12,3 +12,9 @@ How to install
 - Go to your home directory
 - Clone this repo
 - Call ~/.dzen\_config in your .xinitrc
+
+TODO
+----
+
+- fix the ~ in the script to map to $HOME ?
+- make sound thing better (with amixer)
