@@ -92,7 +92,7 @@ workspaces() {
 sound() {
   # X=`expr $X + $W`
   X=530
-  W=500
+  W=470
   ICON="^i($HOME/.dzen/icons/dzen_xbm_pack/vol-hi.xbm)"
   # command to increase the volume
   CI="amixer -c0 sset PCM 5dB+ >/dev/null"
@@ -117,8 +117,8 @@ sound() {
 }
 
 network() {
-  X=1030
-  W=390
+  X=1000
+  W=420
   # Here we remember the previous rx/tx counts
   WRXB=`cat /sys/class/net/wlan0/statistics/rx_bytes`
   WTXB=`cat /sys/class/net/wlan0/statistics/tx_bytes`
@@ -166,7 +166,7 @@ network() {
 # TODO improve this for less 0% and to know when plugged in better!!
 battery() {
   # X=`expr $X + $W`
-  X=1420
+  X=1460
   W=140
   LOWBAT=25        # percentage of battery life marked as low
   LOWCOL='#ff4747' # color when battery is low
