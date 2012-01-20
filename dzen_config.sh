@@ -166,7 +166,7 @@ network() {
 # TODO improve this for less 0% and to know when plugged in better!!
 battery() {
   # X=`expr $X + $W`
-  X=1460
+  X=1440
   W=140
   LOWBAT=25        # percentage of battery life marked as low
   LOWCOL='#ff4747' # color when battery is low
